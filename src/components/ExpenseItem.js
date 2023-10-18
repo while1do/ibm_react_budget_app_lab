@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { TiDelete } from 'react-icons/ti';
+import { MdAddCircle, MdDelete, MdRemoveCircle } from 'react-icons/md';
+
 import { AppContext } from '../context/AppContext';
 
 const ExpenseItem = (props) => {
-    const { dispatch } = useContext(AppContext);
+    const { currency, dispatch } = useContext(AppContext);
     const handleDeleteExpense = () => {
         dispatch({
             type: 'DELETE_EXPENSE',
@@ -20,12 +21,25 @@ const ExpenseItem = (props) => {
             payload: expense
         });
     }
+
+    const decreaseAllocation = (name) => {
+        const expense = {
+            name: name,
+            cost: 10,
+        };
+        dispatch({
+            type: 'DECREASE_EXPENSE',
+            payload: expense
+        });
+    }
+
     return (
         <tr>
         <td>{props.name}</td>
-        <td>£{props.cost}</td>
-        <td><button onClick={event=> increaseAllocation(props.name)}>+</button></td>
-        <td><TiDelete size='1.5em' onClick={handleDeleteExpense}></TiDelete></td>
+        <td>{currency}{props.cost}</td>
+        <td><MdAddCircle style={{color:'green'}} onClick={event=> increaseAllocation(props.name)} /></td>
+        <td><MdRemoveCircle style={{color:'red'}} onClick={event=> decreaseAllocation(props.name)} /></td>
+        <td><MdDelete onClick={handleDeleteExpense} /></td>
         </tr>
     );
 };
